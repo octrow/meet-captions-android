@@ -1,5 +1,7 @@
 # Устройство
 
+[English](architecture.md) | **Русский**
+
 Пакет `dev.octrow.meetcaptions`, модуль `app/`. Тестовый двойник Meet — модуль `fakemeet/`.
 
 ```
@@ -20,7 +22,7 @@
 | `CaptionMerger.kt` | Склеивает последовательные снимки одной реплики без дублей. |
 | `DebugRecorder.kt` | Режим отладки: `events_*.txt` и `dump_*.txt`. |
 | `Prefs.kt` | Настройки: regex текста, regex имени, отладка. |
-| `MainActivity.kt` | Экран настроек: кнопка в специальные возможности, два regex, переключатель отладки. |
+| `MainActivity.kt` | Главный экран: статус службы и кнопка включения, помощь с ограниченными настройками, список расшифровок (открыть, поделиться), два regex, переключатель отладки. |
 | `res/xml/accessibility_service.xml` | Конфигурация службы: все типы событий, пакеты Meet и Gmail, `isAccessibilityTool`, `notificationTimeout=300`. |
 
 ## Как Meet показывает субтитры (S24, Android 16, Meet 379)

@@ -1,5 +1,7 @@
 # Разработка
 
+[English](development.md) | **Русский**
+
 ## Окружение
 
 - JDK 17+ (проверено на 21).
@@ -14,8 +16,6 @@
   curl -fsSL https://dl.google.com/android/cli/latest/linux_x86_64/install.sh | bash
   android --sdk=/path/to/android-sdk sdk install platforms/android-36 build-tools/36.0.0 platform-tools
   ```
-
-На машине автора SDK лежит на отдельном диске (`/mnt/ntfs/dev-tools/android-sdk`), потому что на `/` мало места.
 
 ## Сборка и тесты
 
@@ -83,14 +83,14 @@ adb shell settings put secure enabled_accessibility_services dev.octrow.meetcapt
    Окно с кодом не закрывать: порт сопряжения живёт, пока окно открыто.
 2. Компьютер:
    ```bash
-   adb pair  192.168.0.14:ПОРТ_ИЗ_ОКНА_КОДА  КОД
-   adb connect 192.168.0.14:ПОРТ_С_ГЛАВНОГО_ЭКРАНА_БЕСПРОВОДНОЙ_ОТЛАДКИ
+   adb pair  PHONE_IP:ПОРТ_ИЗ_ОКНА_КОДА  КОД
+   adb connect PHONE_IP:ПОРТ_С_ГЛАВНОГО_ЭКРАНА_БЕСПРОВОДНОЙ_ОТЛАДКИ
    ```
    Это два разных порта.
 3. Если телефон не отвечает, проверьте маршрут: VPN (`ppp0`) может перехватывать локальную сеть.
    ```bash
-   ip route get 192.168.0.14            # должно быть dev wlp8s0, не ppp0
-   sudo ip route add 192.168.0.14/32 dev wlp8s0   # временно, до перезагрузки или переподключения VPN
+   ip route get PHONE_IP            # должно быть dev <wifi-интерфейс>, не ppp0
+   sudo ip route add PHONE_IP/32 dev <wifi-интерфейс>   # временно, до перезагрузки или переподключения VPN
    ```
    mDNS-обнаружение (`adb mdns services`) через VPN тоже не работает, порт подключения смотрите на телефоне.
 
