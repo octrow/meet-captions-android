@@ -14,11 +14,13 @@ import android.widget.Toast
 class MainActivity : Activity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val prefs = Prefs(this)
-        val pad = (16 * resources.displayMetrics.density).toInt()
+        setContentView(buildLayout(Prefs(this)))
+    }
 
+    private fun buildLayout(prefs: Prefs): LinearLayout {
+        val pad = (16 * resources.displayMetrics.density).toInt()
         val regex = EditText(this).apply { setText(prefs.idRegex) }
-        val layout = LinearLayout(this).apply {
+        return LinearLayout(this).apply {
             orientation = LinearLayout.VERTICAL
             setPadding(pad, pad, pad, pad)
             addView(TextView(this@MainActivity).apply {
@@ -42,7 +44,6 @@ class MainActivity : Activity() {
                 setOnCheckedChangeListener { _, on -> prefs.debugDump = on }
             })
         }
-        setContentView(layout)
     }
 
     private fun saveRegex(prefs: Prefs, value: String) {

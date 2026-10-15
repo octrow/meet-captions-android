@@ -26,13 +26,19 @@ class CaptionService : AccessibilityService() {
         val root = meetRoot() ?: return
         val prefs = Prefs(this)
         val now = System.currentTimeMillis()
-        if (prefs.debugDump && now - lastDumpAt > DUMP_INTERVAL_MS) {
-            lastDumpAt = now
-            write(File(outDir(), "dump_${stamp(now)}.txt"), dump(root))
-        }
+        if (prefs.debugDump) dumpThrottled(root, now)
         val idRegex = Regex(prefs.idRegex, RegexOption.IGNORE_CASE)
         val snapshot = buildList { collectCaptions(root, idRegex, this) }.joinToString(" ")
-        if (snapshot.isBlank() || snapshot == lastSnapshot) return
+        if (snapshot.isNotBlank() && snapshot != lastSnapshot) record(snapshot, now)
+    }
+
+    private fun dumpThrottled(root: AccessibilityNodeInfo, now: Long) {
+        if (now - lastDumpAt < DUMP_INTERVAL_MS) return
+        lastDumpAt = now
+        write(File(outDir(), "dump_${stamp(now)}.txt"), dump(root))
+    }
+
+    private fun record(snapshot: String, now: Long) {
         if (now - lastCaptionAt > SESSION_GAP_MS) startSession(now)
         lastSnapshot = snapshot
         lastCaptionAt = now
