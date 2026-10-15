@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="paper">#121320</color>
+    <color name="ink">#E7E8F2</color>
+    <color name="muted">#A0A3B8</color>
+    <color name="line">#2A2C3D</color>
+    <color name="indigo">#9FA8F5</color>
+    <color name="on_indigo">#121320</color>
+    <color name="caption_bg">#252840</color>
+    <color name="caption_text">#FFFFFF</color>
+    <color name="caption_speaker">#A9B3FF</color>
+    <color name="warn">#FFB45C</color>
+</resources>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="ic_launcher_background">#3949AB</color>
+    <!-- Ink on cool paper; the caption box is the one dark, loud element. -->
+    <color name="paper">#F5F6FA</color>
+    <color name="ink">#1B1D2B</color>
+    <color name="muted">#5D6178</color>
+    <color name="line">#DADCE6</color>
+    <color name="indigo">#3949AB</color>
+    <color name="on_indigo">#FFFFFF</color>
+    <color name="caption_bg">#1B1D2B</color>
+    <color name="caption_text">#FFFFFF</color>
+    <color name="caption_speaker">#A9B3FF</color>
+    <color name="warn">#A65B00</color>
+</resources>

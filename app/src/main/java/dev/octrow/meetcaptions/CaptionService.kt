@@ -85,6 +85,8 @@ class CaptionService : AccessibilityService() {
             "com.google.android.apps.meetings",
             "com.google.android.gm",
         )
+        /** File-name timestamp of session and debug files. */
+        const val FILE_STAMP = "yyyy-MM-dd_HH-mm-ss"
         private const val SAVE_DELAY_MS = 3_000L
         // ponytail: a silence this long splits a call in two; detect call end from Meet's UI if that happens
         private const val SESSION_GAP_MS = 5 * 60_000L
@@ -94,7 +96,7 @@ class CaptionService : AccessibilityService() {
             "MeetCaptions",
         ).apply { mkdirs() }
 
-        private fun stamp(ms: Long) = SimpleDateFormat("yyyy-MM-dd_HH-mm-ss", Locale.US).format(Date(ms))
+        private fun stamp(ms: Long) = SimpleDateFormat(FILE_STAMP, Locale.US).format(Date(ms))
     }
 }
 

@@ -15,7 +15,7 @@ import java.util.Locale
  */
 class DebugRecorder(private val dir: File, private val meetPackages: Set<String>) {
     private val started = System.currentTimeMillis()
-    private val eventsFile = File(dir, "events_${stamp(started, FILE_STAMP)}.txt")
+    private val eventsFile = File(dir, "events_${stamp(started, CaptionService.FILE_STAMP)}.txt")
     private var lastDumpAt = 0L
 
     fun onEvent(event: AccessibilityEvent, windows: List<AccessibilityWindowInfo>) {
@@ -23,7 +23,7 @@ class DebugRecorder(private val dir: File, private val meetPackages: Set<String>
         if (eventsFile.length() < MAX_EVENTS_BYTES) append(eventsFile, describe(event, now))
         if (now - lastDumpAt < DUMP_INTERVAL_MS) return
         lastDumpAt = now
-        write(File(dir, "dump_${stamp(now, FILE_STAMP)}.txt"), dumpWindows(windows))
+        write(File(dir, "dump_${stamp(now, CaptionService.FILE_STAMP)}.txt"), dumpWindows(windows))
     }
 
     private fun describe(event: AccessibilityEvent, now: Long): String {
@@ -65,7 +65,6 @@ class DebugRecorder(private val dir: File, private val meetPackages: Set<String>
         const val TAG = "MeetCaptions"
         const val DUMP_INTERVAL_MS = 5_000L
         const val MAX_EVENTS_BYTES = 5L * 1024 * 1024
-        const val FILE_STAMP = "yyyy-MM-dd_HH-mm-ss"
         const val CLOCK = "HH:mm:ss.SSS"
 
         fun stamp(ms: Long, pattern: String) = SimpleDateFormat(pattern, Locale.US).format(Date(ms))
