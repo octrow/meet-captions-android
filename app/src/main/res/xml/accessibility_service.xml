@@ -7,4 +7,5 @@
     android:isAccessibilityTool="true"
     android:description="@string/service_description"
     android:notificationTimeout="300"
+    android:settingsActivity="dev.octrow.meetcaptions.MainActivity"
     android:packageNames="com.google.android.apps.tachyon,com.google.android.apps.meetings,com.google.android.gm" />

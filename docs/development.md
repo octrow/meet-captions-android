@@ -45,6 +45,8 @@ adb shell am start -n com.google.android.apps.tachyon/dev.octrow.fakemeet.FakeCa
 sleep 12; adb shell 'cat /sdcard/Documents/MeetCaptions/*.txt'
 ```
 
+`adb install -r` и `am start -S` (force-stop) выключают службу: после них повторите обе команды `settings put`.
+
 Ожидается:
 ```
 Аня (…)

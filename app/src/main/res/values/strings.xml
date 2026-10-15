@@ -34,6 +34,9 @@
     <string name="debug_switch">Записывать события и дампы окон</string>
     <string name="debug_note">Файлы событий Meet и дампы экрана раз в 5 секунд появятся в той же папке. Выключите, когда закончите.</string>
 
+    <string name="channel_recording">Запись субтитров</string>
+    <string name="notice_recording">Идёт запись субтитров</string>
+
     <string name="expanded">Развёрнуто</string>
     <string name="collapsed">Свёрнуто</string>
 </resources>

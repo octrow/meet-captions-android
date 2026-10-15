@@ -21,6 +21,7 @@ class CaptionService : AccessibilityService() {
     private var lastSnapshot = emptyList<Block>()
     private var lastCaptionAt = 0L
     private var debug: DebugRecorder? = null
+    private val notice by lazy { RecordingNotice(this) }
 
     override fun onAccessibilityEvent(event: AccessibilityEvent) {
         val prefs = Prefs(this)
@@ -50,6 +51,7 @@ class CaptionService : AccessibilityService() {
 
     override fun onDestroy() {
         save()
+        notice.cancel()
         super.onDestroy()
     }
 
@@ -65,7 +67,9 @@ class CaptionService : AccessibilityService() {
 
     private fun save() {
         val file = sessionFile ?: return
-        if (!transcript.isEmpty()) write(file, transcript.text())
+        if (transcript.isEmpty()) return
+        write(file, transcript.text())
+        lastSnapshot.lastOrNull()?.let { notice.show("${it.speaker}: ${it.text}".removePrefix(": ")) }
     }
 
     private fun write(file: File, text: String) {
