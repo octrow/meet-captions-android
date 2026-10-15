@@ -53,7 +53,7 @@ Meet changed the caption format. Turn on debug mode and go through the dumps (be
 
 ## Meet updated and recording stopped
 
-1. Open Meet Captions and turn on **"Записывать события и дампы окон"** (record events and window dumps) in the «Отладка» (Debug) section.
+1. Open Meet Captions and turn on **Record events and window dumps** in the **Debug** section.
 2. Make a call with captions on and a minute or two of speech from two devices. Turn debug mode off.
 3. Pull the files:
    ```bash
@@ -68,8 +68,8 @@ Meet changed the caption format. Turn on debug mode and go through the dumps (be
    ```
    The first command looks for Cyrillic text in the dumps; for captions in another language, change the `[а-я]` pattern.
    The source that updates most often while someone talks is usually the captions.
-5. Put part of its id into the «Regex id текста субтитров» (caption text id regex) field and tap «Сохранить» (Save). If the name is in a separate node,
-   put that node's id into «Regex id имени говорящего» (speaker name id regex).
+5. Put part of its id into the **Caption text id regex** field and tap **Save**. If the name is in a separate node,
+   put that node's id into **Speaker name id regex**.
 6. If the caption node has `id=null` (Compose without a resource id), a regex won't help: the code needs a different selector.
 
 Delete the dumps when you're done: they contain the account's email and the participants' names.

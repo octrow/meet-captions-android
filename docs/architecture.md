@@ -5,13 +5,11 @@
 Package `dev.octrow.meetcaptions`, module `app/`. The Meet test double lives in module `fakemeet/`.
 
 ```
-событие доступности ──► CaptionService ──► BlockCollector ──► Block.parse ──► Transcript ──► файл
-(Meet / Gmail)            окна Meet          обход дерева       «Имя: текст»     реплики       каждые 3 с
+accessibility event ──► CaptionService ──► BlockCollector ──► Block.parse ──► Transcript ──► file
+(Meet / Gmail)           Meet windows       tree walk          "Name: text"     turns         every 3 s
                               │                                                  │
-                              └──► DebugRecorder (только в режиме отладки)        └── CaptionMerger на реплику
+                              └──► DebugRecorder (debug mode only)               └── CaptionMerger per turn
 ```
-
-In plain words: an accessibility event from Meet or Gmail goes to `CaptionService`, which reads the Meet windows. `BlockCollector` walks the view tree, `Block.parse` splits `Name: text`, `Transcript` keeps the list of turns, and the file is written every 3 seconds. Each turn has its own `CaptionMerger`. `DebugRecorder` runs only in debug mode.
 
 ## Components
 

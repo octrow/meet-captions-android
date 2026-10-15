@@ -32,5 +32,5 @@ body:
     attributes:
       label: Debug files
       description: >-
-        In the app, Отладка (Debug) → turn on «Записывать события и дампы окон», make a short call with captions on, attach dump_*.txt and events_*.txt
+        In the app, Debug → turn on "Record events and window dumps", make a short call with captions on, attach dump_*.txt and events_*.txt
         from Documents/MeetCaptions. Remove private names and text first.

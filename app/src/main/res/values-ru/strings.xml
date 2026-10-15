@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="service_description">Читает субтитры Google Meet с экрана и сохраняет их в Documents/MeetCaptions. Ничего не отправляет в сеть.</string>
+    <string name="tagline">Сохраняет субтитры звонков Google Meet в текстовые файлы. Без интернета.</string>
+
+    <string name="status_on">Запись идёт. Включите субтитры в звонке, и текст сохранится сам.</string>
+    <string name="status_off">Запись выключена.</string>
+    <string name="enable_service">Включить службу</string>
+    <string name="restricted_title">Служба неактивна в настройках?</string>
+    <string name="restricted_help">Android ограничивает приложения, установленные не из магазина. Откройте «О приложении», нажмите ⋮ в правом верхнем углу и разрешите ограниченные настройки. Затем включите службу снова.</string>
+    <string name="open_app_info">Открыть «О приложении»</string>
+
+    <string name="section_transcripts">Расшифровки</string>
+    <string name="transcripts_folder">Папка Documents/MeetCaptions</string>
+    <string name="no_transcripts">Здесь появятся звонки. Включите субтитры в Meet, и после звонка расшифровка будет в этом списке.</string>
+    <string name="quoted">«%1$s»</string>
+    <string name="empty_transcript">Без реплик</string>
+    <string name="share">Поделиться</string>
+    <string name="no_app">Нет приложения, чтобы открыть текстовый файл</string>
+
+    <string name="section_regex">Распознавание субтитров</string>
+    <string name="regex_note">Меняйте, только если Meet обновился и расшифровки перестали появляться. Нужный id подскажет отладочный дамп.</string>
+    <string name="label_text_regex">Regex id текста субтитров</string>
+    <string name="label_name_regex">Regex id имени говорящего</string>
+    <string name="save_regex">Сохранить</string>
+    <string name="reset_regex">Сбросить</string>
+    <string name="bad_regex">Некорректный regex</string>
+    <string name="saved">Сохранено</string>
+
+    <string name="section_debug">Отладка</string>
+    <string name="debug_switch">Записывать события и дампы окон</string>
+    <string name="debug_note">Файлы событий Meet и дампы экрана раз в 5 секунд появятся в той же папке. Выключите, когда закончите.</string>
+
+    <string name="channel_recording">Запись субтитров</string>
+    <string name="notice_recording">Идёт запись субтитров</string>
+
+    <string name="expanded">Развёрнуто</string>
+    <string name="collapsed">Свёрнуто</string>
+</resources>

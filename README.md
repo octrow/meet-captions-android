@@ -19,7 +19,7 @@ permission and no third-party libraries.
 
 <p align="center"><img src="assets/readme/app-main.png" width="300" alt="The app main screen: service is recording, two saved calls with a Share button, caption recognition and debug settings"></p>
 
-<p align="center"><sub>The app with two saved test calls. The transcript above is from a real test call; «Вы» is Meet’s label for you in a Russian-language call.</sub></p>
+<p align="center"><sub>The app (Russian locale) with two saved test calls; the interface follows the phone language, English or Russian. The transcript above is from a real test call; «Вы» is Meet’s label for you in a Russian-language call.</sub></p>
 
 Tested on a Samsung S24 Ultra, Android 16, Meet 379 (October 2026).
 

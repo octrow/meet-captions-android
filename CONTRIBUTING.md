@@ -8,7 +8,7 @@ version I don't have is the most useful thing you can send.
 ## Reporting a bug
 
 Use the [bug form](https://github.com/octrow/meet-captions-android/issues/new?template=bug.yml). If captions stop
-being saved after a Meet update, open the app, section «Отладка» (Debug), and turn on «Записывать события и дампы окон» (record events and window dumps), make a short call with captions on, and
+being saved after a Meet update, open the app, section **Debug**, and turn on **Record events and window dumps**, make a short call with captions on, and
 attach the `dump_*.txt` and `events_*.txt` files from `Documents/MeetCaptions`. Remove anything private from them
 first: they contain the caption text and participant names.
 
