@@ -20,24 +20,22 @@ class CaptionService : AccessibilityService() {
     private var sessionFile: File? = null
     private var lastSnapshot = emptyList<Block>()
     private var lastCaptionAt = 0L
-    private var lastDumpAt = 0L
+    private var debug: DebugRecorder? = null
 
     override fun onAccessibilityEvent(event: AccessibilityEvent) {
-        val roots = meetRoots()
-        if (roots.isEmpty()) return
         val prefs = Prefs(this)
         val now = System.currentTimeMillis()
-        if (prefs.debugDump) dumpThrottled(roots, now)
+        if (prefs.debugDump) debugRecorder().onEvent(event, windows, now) else debug = null
+        val roots = meetRoots()
+        if (roots.isEmpty()) return
         val collector = BlockCollector(prefs.idRegex, prefs.nameRegex)
         val snapshot = roots.flatMap(collector::collect)
         if (snapshot.isNotEmpty() && snapshot != lastSnapshot) record(snapshot, now)
     }
 
-    private fun dumpThrottled(roots: List<AccessibilityNodeInfo>, now: Long) {
-        if (now - lastDumpAt < DUMP_INTERVAL_MS) return
-        lastDumpAt = now
-        write(File(outDir(), "dump_${stamp(now)}.txt"), roots.joinToString("\n") { dump(it) })
-    }
+    // A new events file each time debug mode is switched on.
+    private fun debugRecorder(): DebugRecorder =
+        debug ?: DebugRecorder(outDir(), MEET_PACKAGES).also { debug = it }
 
     private fun record(snapshot: List<Block>, now: Long) {
         if (now - lastCaptionAt > SESSION_GAP_MS) startSession(now)
@@ -78,17 +76,11 @@ class CaptionService : AccessibilityService() {
         }
     }
 
-    private fun dump(node: AccessibilityNodeInfo, depth: Int = 0): String = buildString {
-        append("  ".repeat(depth))
-        append("${node.className} id=${node.viewIdResourceName} text=${node.text} desc=${node.contentDescription}\n")
-        for (i in 0 until node.childCount) node.getChild(i)?.let { append(dump(it, depth + 1)) }
-    }
 
     companion object {
         private const val TAG = "MeetCaptions"
         private val MEET_PACKAGES = setOf("com.google.android.apps.tachyon", "com.google.android.apps.meetings")
         private const val SAVE_DELAY_MS = 3_000L
-        private const val DUMP_INTERVAL_MS = 10_000L
         // ponytail: a silence this long splits a call in two; detect call end from Meet's UI if that happens
         private const val SESSION_GAP_MS = 5 * 60_000L
 

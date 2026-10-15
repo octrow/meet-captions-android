@@ -43,7 +43,7 @@ class MainActivity : Activity() {
                 setOnClickListener { saveRegex(prefs, textRegex.text.toString(), nameRegex.text.toString()) }
             })
             addView(CheckBox(this@MainActivity).apply {
-                text = "Отладка: дамп экрана Meet раз в 10 с"
+                text = "Отладка: события Meet + дамп окон раз в 5 с"
                 isChecked = prefs.debugDump
                 setOnCheckedChangeListener { _, on -> prefs.debugDump = on }
             })
