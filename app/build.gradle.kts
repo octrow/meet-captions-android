@@ -16,6 +16,16 @@ android {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
     }
+    // Release signing comes from CI secrets (see .github/workflows/release.yml); without them the APK is unsigned.
+    System.getenv("SIGNING_KEYSTORE")?.let { keystore ->
+        signingConfigs.create("release") {
+            storeFile = file(keystore)
+            storePassword = System.getenv("SIGNING_STORE_PASSWORD")
+            keyAlias = System.getenv("SIGNING_KEY_ALIAS")
+            keyPassword = System.getenv("SIGNING_KEY_PASSWORD")
+        }
+        buildTypes.getByName("release").signingConfig = signingConfigs.getByName("release")
+    }
 }
 
 dependencies {
