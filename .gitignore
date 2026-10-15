@@ -3,3 +3,9 @@ build/
 local.properties
 .idea/
 *.iml
+.env
+.env.*
+*.jks
+*.keystore
+keystore.properties
+.claude/settings.local.json
