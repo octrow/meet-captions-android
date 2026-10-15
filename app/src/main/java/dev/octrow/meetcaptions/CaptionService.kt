@@ -79,7 +79,12 @@ class CaptionService : AccessibilityService() {
 
     companion object {
         private const val TAG = "MeetCaptions"
-        private val MEET_PACKAGES = setOf("com.google.android.apps.tachyon", "com.google.android.apps.meetings")
+        // Meet calls also run inside Gmail (same conference UI library).
+        private val MEET_PACKAGES = setOf(
+            "com.google.android.apps.tachyon",
+            "com.google.android.apps.meetings",
+            "com.google.android.gm",
+        )
         private const val SAVE_DELAY_MS = 3_000L
         // ponytail: a silence this long splits a call in two; detect call end from Meet's UI if that happens
         private const val SESSION_GAP_MS = 5 * 60_000L
@@ -113,7 +118,7 @@ private class BlockCollector(textRegex: String, nameRegex: String) {
         val value = node.text?.toString()
         if (id != null && !value.isNullOrBlank()) {
             if (name.containsMatchIn(id)) speaker = value
-            else if (text.containsMatchIn(id)) blocks += Block(speaker, value)
+            else if (text.containsMatchIn(id)) blocks += Block.parse(speaker, value)
         }
         for (i in 0 until node.childCount) node.getChild(i)?.let { visit(it) }
     }

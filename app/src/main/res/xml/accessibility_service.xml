@@ -4,6 +4,7 @@
     android:accessibilityFeedbackType="feedbackGeneric"
     android:accessibilityFlags="flagReportViewIds|flagRetrieveInteractiveWindows|flagIncludeNotImportantViews"
     android:canRetrieveWindowContent="true"
+    android:isAccessibilityTool="true"
     android:description="@string/service_description"
     android:notificationTimeout="300"
-    android:packageNames="com.google.android.apps.tachyon,com.google.android.apps.meetings" />
+    android:packageNames="com.google.android.apps.tachyon,com.google.android.apps.meetings,com.google.android.gm" />

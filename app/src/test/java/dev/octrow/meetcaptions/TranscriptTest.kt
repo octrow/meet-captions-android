@@ -55,4 +55,26 @@ class TranscriptTest {
         t.add(listOf(Block("Боб", "да")), 3)
         assertEquals("Аня (t1)\nпривет как дела\n\nБоб (t2)\nда\n", t.text())
     }
+
+    @Test
+    fun inlineSpeakerPrefixIsParsed() {
+        assertEquals(listOf(Block("Dan P", "так проверка")), Block.parse("", "Dan P: так проверка"))
+        assertEquals(
+            listOf(Block("Вы", "раз два"), Block("Аня", "три")),
+            Block.parse("", "Вы: раз два\nАня: три"),
+        )
+        assertEquals(listOf(Block("Боб", "без префикса")), Block.parse("Боб", "без префикса"))
+    }
+
+    @Test
+    fun speakerChangeInRealGmailSnapshotsStartsNewTurn() {
+        val t = transcript()
+        listOf(
+            "Dan P: 1 2 3 4 5",
+            "Dan P: 1 2 3 4 5 проверка проверка",
+            "Вы: проверка проверка 15 16",
+            "Вы: проверка проверка 15 16 проверка",
+        ).forEachIndexed { i, s -> t.add(Block.parse("", s), i.toLong()) }
+        assertEquals("Dan P (t0)\n1 2 3 4 5 проверка проверка\n\nВы (t2)\nпроверка проверка 15 16 проверка\n", t.text())
+    }
 }

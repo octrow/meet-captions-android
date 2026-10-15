@@ -5,7 +5,20 @@ import java.util.Date
 import java.util.Locale
 
 /** One caption block on screen: who speaks and what Meet currently shows for them. */
-data class Block(val speaker: String, val text: String)
+data class Block(val speaker: String, val text: String) {
+    companion object {
+        // Meet (also inside Gmail) writes the speaker into the caption text: "Dan P: так проверка".
+        private val INLINE_SPEAKER = Regex("^([^:]{1,40}):\\s+(.+)$")
+
+        /** Splits a caption view's text into blocks; an inline "Name: " wins over [speaker] from a name view. */
+        fun parse(speaker: String, value: String): List<Block> =
+            value.lines().filter { it.isNotBlank() }.map { line ->
+                INLINE_SPEAKER.find(line.trim())
+                    ?.let { Block(it.groupValues[1].trim(), it.groupValues[2]) }
+                    ?: Block(speaker, line.trim())
+            }
+    }
+}
 
 /**
  * Speaker turns built from caption snapshots. Meet appends the live block at the bottom,
