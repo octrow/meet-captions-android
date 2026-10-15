@@ -1,7 +1,12 @@
-# Android (Samsung S24 Ultra): Meet Captions
+# Meet Captions (Android)
 
-Служба специальных возможностей читает субтитры с экрана приложения Google Meet и сохраняет их в
-`Documents/MeetCaptions/<дата_время>.txt`. Звук не пишется, сеть не используется, зависимостей нет.
+Автосохранение субтитров Google Meet на Android с именами говорящих и временем реплик.
+Служба специальных возможностей читает субтитры с экрана звонка (приложение Meet или вкладка Meet в Gmail)
+и сохраняет их в `Documents/MeetCaptions/<дата_время>.txt`. Звук не пишется, сеть не используется,
+зависимостей нет. Работает, когда вы не организатор и встреча на русском (Gemini-заметки тут не помогут).
+
+Проверено на Samsung S24 Ultra, Android 16. Ubuntu-часть (расширение TranscripTonic) — в соседнем
+репозитории `meet-captions`.
 
 ```
 Аня (14:03:12)
@@ -77,3 +82,10 @@ sleep 12; adb shell 'cat /sdcard/Documents/MeetCaptions/*.txt'
 уже уехало вверх и сохраняется, остальное заменяется снимком (так учитываются и дописанные, и исправленные слова).
 Нет совпадения: блок закрывается, начинается новый абзац.
 `Transcript`: новые слова есть только в нижнем блоке; смена имени в нём начинает новую реплику со временем.
+
+## Транскрипты на компьютер (Syncthing)
+
+1. Ubuntu: `sudo apt install syncthing && systemctl --user enable --now syncthing`, веб-панель http://127.0.0.1:8384.
+2. Телефон: Syncthing-Fork (F-Droid или Google Play), добавить устройство Ubuntu по QR/ID.
+3. На телефоне общая папка `Documents/MeetCaptions`, тип «Только отправка». На Ubuntu принять её,
+   например, в `~/Downloads/TranscripTonic/android`, рядом с транскриптами TranscripTonic.
