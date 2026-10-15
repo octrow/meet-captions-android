@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="420" viewBox="0 0 1200 420" role="img" aria-labelledby="title desc">
+  <title id="title">Meet Captions for Android</title>
+  <desc id="desc">A live Google Meet caption line is saved every 3 seconds into a text file with speaker names and timestamps.</desc>
+  <defs>
+    <marker id="tip" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 Z" fill="#3949AB"/></marker>
+  </defs>
+  <rect width="1200" height="420" rx="26" fill="#F5F6FA"/>
+  <g id="title-block" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif">
+    <g transform="translate(64 64)">
+      <rect width="72" height="72" rx="18" fill="#3949AB"/>
+      <path transform="translate(-9 -12) scale(0.84)" fill="#FFFFFF" fill-rule="evenodd" d="M38,34 H70 A8,8 0 0 1 78,42 V60 A8,8 0 0 1 70,68 H48 L38,78 V68 A8,8 0 0 1 30,60 V42 A8,8 0 0 1 38,34 Z M40,44 H68 A2,2 0 0 1 68,48 H40 A2,2 0 0 1 40,44 Z M40,54 H58 A2,2 0 0 1 58,58 H40 A2,2 0 0 1 40,54 Z"/>
+    </g>
+    <text x="64" y="186" font-size="18" font-weight="600" letter-spacing="1.5" fill="#5D6178">ANDROID 11+ · GOOGLE MEET</text>
+    <text x="62" y="248" font-size="64" font-weight="700" letter-spacing="-1.5" fill="#1B1D2B">Meet Captions</text>
+    <text x="64" y="296" font-size="25" fill="#1B1D2B">Saves Meet live captions as text files,</text>
+    <text x="64" y="330" font-size="25" fill="#1B1D2B">with speaker names and timestamps.</text>
+    <text x="64" y="372" font-size="18" fill="#5D6178">No audio recorded · No internet permission · MIT</text>
+  </g>
+  <g id="project-proof" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif">
+    <text x="660" y="62" font-size="18" fill="#5D6178">Meet call screen</text>
+    <rect x="660" y="74" width="476" height="68" rx="16" fill="#1B1D2B"/>
+    <text x="684" y="116" font-size="22" fill="#FFFFFF"><tspan fill="#A9B3FF" font-weight="600">Dan P:</tspan> 11 12 14 15 21 проверка</text>
+    <line x1="720" y1="150" x2="720" y2="186" stroke="#3949AB" stroke-width="3" marker-end="url(#tip)"/>
+    <text x="744" y="176" font-size="18" fill="#5D6178">saved every 3 s</text>
+    <rect x="660" y="196" width="476" height="184" rx="16" fill="#FFFFFF" stroke="#DADCE6" stroke-width="2"/>
+    <text x="684" y="226" font-size="18" fill="#5D6178" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">MeetCaptions/2026-10-15_21-43-06.txt</text>
+    <line x1="660" y1="240" x2="1136" y2="240" stroke="#DADCE6" stroke-width="2"/>
+    <text x="684" y="272" font-size="20" font-weight="600" fill="#3949AB">Вы <tspan fill="#5D6178" font-weight="400">(21:43:06)</tspan></text>
+    <text x="684" y="299" font-size="20" fill="#1B1D2B">1 2 3 4 5 6 7 8 есть</text>
+    <text x="684" y="337" font-size="20" font-weight="600" fill="#3949AB">Dan P <tspan fill="#5D6178" font-weight="400">(21:43:15)</tspan></text>
+    <text x="684" y="364" font-size="20" fill="#1B1D2B">11 12 14 15 21 проверка</text>
+  </g>
+</svg>

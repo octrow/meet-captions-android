@@ -1,4 +1,4 @@
-# Meet Captions for Android
+<p align="center"><img src="assets/readme/hero.svg" width="100%" alt="Meet Captions for Android. A Meet caption line, Dan P: 11 12 14 15 21 проверка, is saved every 3 seconds to MeetCaptions/2026-10-15_21-43-06.txt as: Вы (21:43:06) 1 2 3 4 5 6 7 8 есть; Dan P (21:43:15) 11 12 14 15 21 проверка"></p>
 
 <p align="center"><b>English</b> | <a href="README.ru.md">Русский</a></p>
 
@@ -17,15 +17,9 @@ An accessibility service reads the captions from the call screen (the Meet app o
 writes them to `Documents/MeetCaptions/<date_time>.txt`. No audio is recorded. The app has no internet
 permission and no third-party libraries.
 
-```
-Вы (21:43:06)
-1 2 3 4 5 6 7 8 есть
+<p align="center"><img src="assets/readme/app-main.png" width="300" alt="The app main screen: service is recording, two saved calls with a Share button, caption recognition and debug settings"></p>
 
-Dan P (21:43:15)
-11 12 14 15 21 проверка
-```
-
-<sub>A real test call. «Вы» is Meet's label for you in a Russian-language call.</sub>
+<p align="center"><sub>The app with two saved test calls. The transcript above is from a real test call; «Вы» is Meet’s label for you in a Russian-language call.</sub></p>
 
 Tested on a Samsung S24 Ultra, Android 16, Meet 379 (October 2026).
 
