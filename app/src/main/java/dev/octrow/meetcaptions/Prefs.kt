@@ -10,6 +10,11 @@ class Prefs(context: Context) {
         get() = sp.getString("id_regex", DEFAULT_ID_REGEX)!!
         set(v) = sp.edit().putString("id_regex", v).apply()
 
+    /** Matched against view resource ids to find the speaker name above a caption block. */
+    var nameRegex: String
+        get() = sp.getString("name_regex", DEFAULT_NAME_REGEX)!!
+        set(v) = sp.edit().putString("name_regex", v).apply()
+
     var debugDump: Boolean
         get() = sp.getBoolean("debug_dump", false)
         set(v) = sp.edit().putBoolean("debug_dump", v).apply()
@@ -17,5 +22,6 @@ class Prefs(context: Context) {
     companion object {
         // ponytail: guessed id, confirm from a debug dump of a real call
         const val DEFAULT_ID_REGEX = "caption"
+        const val DEFAULT_NAME_REGEX = "speaker|participant_name"
     }
 }

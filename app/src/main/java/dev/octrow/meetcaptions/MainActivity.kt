@@ -19,7 +19,8 @@ class MainActivity : Activity() {
 
     private fun buildLayout(prefs: Prefs): LinearLayout {
         val pad = (16 * resources.displayMetrics.density).toInt()
-        val regex = EditText(this).apply { setText(prefs.idRegex) }
+        val textRegex = EditText(this).apply { setText(prefs.idRegex) }
+        val nameRegex = EditText(this).apply { setText(prefs.nameRegex) }
         return LinearLayout(this).apply {
             orientation = LinearLayout.VERTICAL
             setPadding(pad, pad, pad, pad)
@@ -32,11 +33,13 @@ class MainActivity : Activity() {
                 text = "Открыть специальные возможности"
                 setOnClickListener { startActivity(Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS)) }
             })
-            addView(TextView(this@MainActivity).apply { text = "\nRegex id узлов субтитров:" })
-            addView(regex)
+            addView(TextView(this@MainActivity).apply { text = "\nRegex id текста субтитров:" })
+            addView(textRegex)
+            addView(TextView(this@MainActivity).apply { text = "Regex id имени говорящего:" })
+            addView(nameRegex)
             addView(Button(this@MainActivity).apply {
                 text = "Сохранить regex"
-                setOnClickListener { saveRegex(prefs, regex.text.toString()) }
+                setOnClickListener { saveRegex(prefs, textRegex.text.toString(), nameRegex.text.toString()) }
             })
             addView(CheckBox(this@MainActivity).apply {
                 text = "Отладка: дамп экрана Meet раз в 10 с"
@@ -46,9 +49,12 @@ class MainActivity : Activity() {
         }
     }
 
-    private fun saveRegex(prefs: Prefs, value: String) {
-        val ok = runCatching { Regex(value) }.isSuccess && value.isNotBlank()
-        if (ok) prefs.idRegex = value
+    private fun saveRegex(prefs: Prefs, text: String, name: String) {
+        val ok = listOf(text, name).all { it.isNotBlank() && runCatching { Regex(it) }.isSuccess }
+        if (ok) {
+            prefs.idRegex = text
+            prefs.nameRegex = name
+        }
         Toast.makeText(this, if (ok) "Сохранено" else "Некорректный regex", Toast.LENGTH_SHORT).show()
     }
 }

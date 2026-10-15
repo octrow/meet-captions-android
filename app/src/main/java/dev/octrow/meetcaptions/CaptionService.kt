@@ -16,9 +16,9 @@ import java.util.Locale
 class CaptionService : AccessibilityService() {
     private val handler = Handler(Looper.getMainLooper())
     private val saveRunnable = Runnable { save() }
-    private var merger = CaptionMerger()
+    private var transcript = Transcript()
     private var sessionFile: File? = null
-    private var lastSnapshot = ""
+    private var lastSnapshot = emptyList<Block>()
     private var lastCaptionAt = 0L
     private var lastDumpAt = 0L
 
@@ -27,9 +27,8 @@ class CaptionService : AccessibilityService() {
         val prefs = Prefs(this)
         val now = System.currentTimeMillis()
         if (prefs.debugDump) dumpThrottled(root, now)
-        val idRegex = Regex(prefs.idRegex, RegexOption.IGNORE_CASE)
-        val snapshot = buildList { collectCaptions(root, idRegex, this) }.joinToString(" ")
-        if (snapshot.isNotBlank() && snapshot != lastSnapshot) record(snapshot, now)
+        val snapshot = BlockCollector(prefs.idRegex, prefs.nameRegex).collect(root)
+        if (snapshot.isNotEmpty() && snapshot != lastSnapshot) record(snapshot, now)
     }
 
     private fun dumpThrottled(root: AccessibilityNodeInfo, now: Long) {
@@ -38,11 +37,11 @@ class CaptionService : AccessibilityService() {
         write(File(outDir(), "dump_${stamp(now)}.txt"), dump(root))
     }
 
-    private fun record(snapshot: String, now: Long) {
+    private fun record(snapshot: List<Block>, now: Long) {
         if (now - lastCaptionAt > SESSION_GAP_MS) startSession(now)
         lastSnapshot = snapshot
         lastCaptionAt = now
-        merger.add(snapshot)
+        transcript.add(snapshot, now)
         handler.removeCallbacks(saveRunnable)
         handler.postDelayed(saveRunnable, SAVE_DELAY_MS)
     }
@@ -57,25 +56,15 @@ class CaptionService : AccessibilityService() {
     private fun meetRoot(): AccessibilityNodeInfo? =
         windows.firstNotNullOfOrNull { w -> w.root?.takeIf { it.packageName in MEET_PACKAGES } }
 
-    private fun collectCaptions(node: AccessibilityNodeInfo, idRegex: Regex, out: MutableList<String>) {
-        val id = node.viewIdResourceName
-        val text = node.text?.toString()
-        if (id != null && text != null && idRegex.containsMatchIn(id)) {
-            out.add(text)
-            return
-        }
-        for (i in 0 until node.childCount) node.getChild(i)?.let { collectCaptions(it, idRegex, out) }
-    }
-
     private fun startSession(now: Long) {
         save()
-        merger = CaptionMerger()
+        transcript = Transcript()
         sessionFile = File(outDir(), "${stamp(now)}.txt")
     }
 
     private fun save() {
         val file = sessionFile ?: return
-        if (!merger.isEmpty()) write(file, merger.text())
+        if (!transcript.isEmpty()) write(file, transcript.text())
     }
 
     private fun write(file: File, text: String) {
@@ -105,5 +94,31 @@ class CaptionService : AccessibilityService() {
         ).apply { mkdirs() }
 
         private fun stamp(ms: Long) = SimpleDateFormat("yyyy-MM-dd_HH-mm-ss", Locale.US).format(Date(ms))
+    }
+}
+
+/**
+ * Walks the Meet window in screen order. A node whose id matches [nameRegex] sets the speaker
+ * for the caption text nodes (id matches [textRegex]) that follow it.
+ */
+private class BlockCollector(textRegex: String, nameRegex: String) {
+    private val text = Regex(textRegex, RegexOption.IGNORE_CASE)
+    private val name = Regex(nameRegex, RegexOption.IGNORE_CASE)
+    private val blocks = mutableListOf<Block>()
+    private var speaker = ""
+
+    fun collect(root: AccessibilityNodeInfo): List<Block> {
+        visit(root)
+        return blocks
+    }
+
+    private fun visit(node: AccessibilityNodeInfo) {
+        val id = node.viewIdResourceName
+        val value = node.text?.toString()
+        if (id != null && !value.isNullOrBlank()) {
+            if (name.containsMatchIn(id)) speaker = value
+            else if (text.containsMatchIn(id)) blocks += Block(speaker, value)
+        }
+        for (i in 0 until node.childCount) node.getChild(i)?.let { visit(it) }
     }
 }
