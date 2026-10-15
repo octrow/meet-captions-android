@@ -69,4 +69,12 @@ class CaptionMergerTest {
         m.add("да, я подготовил")
         assertEquals("да, я подготовил", m.text())
     }
+
+    @Test
+    fun unfinishedLastWordIsCompleted() {
+        val m = CaptionMerger()
+        m.add("22 провер")
+        m.add("22 проверка с другой стороны")
+        assertEquals("22 проверка с другой стороны", m.text())
+    }
 }

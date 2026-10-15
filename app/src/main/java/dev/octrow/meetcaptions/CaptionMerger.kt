@@ -45,8 +45,12 @@ class CaptionMerger(private val anchorWords: Int = 3) {
         val minOverlap = minOf(MIN_OVERLAP, key.size, words.size)
         return (words.size - 1 downTo words.size - key.size + 1)
             .filter { it >= 0 && words.size - it >= minOverlap }
-            .firstOrNull { words.subList(it, words.size) == key.subList(0, words.size - it) } ?: -1
+            .firstOrNull { tailMatches(words.subList(it, words.size), key.subList(0, words.size - it)) } ?: -1
     }
+
+    // Meet shows a word while it is still being recognized ("провер" before "проверка").
+    private fun tailMatches(tail: List<String>, key: List<String>): Boolean =
+        tail.dropLast(1) == key.dropLast(1) && key.last().startsWith(tail.last())
 
     private companion object {
         val WHITESPACE = Regex("\\s+")
