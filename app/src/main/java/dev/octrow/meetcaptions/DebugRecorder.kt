@@ -18,7 +18,8 @@ class DebugRecorder(private val dir: File, private val meetPackages: Set<String>
     private val eventsFile = File(dir, "events_${stamp(started, FILE_STAMP)}.txt")
     private var lastDumpAt = 0L
 
-    fun onEvent(event: AccessibilityEvent, windows: List<AccessibilityWindowInfo>, now: Long) {
+    fun onEvent(event: AccessibilityEvent, windows: List<AccessibilityWindowInfo>) {
+        val now = System.currentTimeMillis()
         if (eventsFile.length() < MAX_EVENTS_BYTES) append(eventsFile, describe(event, now))
         if (now - lastDumpAt < DUMP_INTERVAL_MS) return
         lastDumpAt = now

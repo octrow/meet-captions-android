@@ -25,7 +25,7 @@ class CaptionService : AccessibilityService() {
     override fun onAccessibilityEvent(event: AccessibilityEvent) {
         val prefs = Prefs(this)
         val now = System.currentTimeMillis()
-        if (prefs.debugDump) debugRecorder().onEvent(event, windows, now) else debug = null
+        if (prefs.debugDump) debugRecorder().onEvent(event, windows) else debug = null
         val roots = meetRoots()
         if (roots.isEmpty()) return
         val collector = BlockCollector(prefs.idRegex, prefs.nameRegex)
