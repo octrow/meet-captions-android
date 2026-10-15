@@ -6,6 +6,7 @@
 <a href="https://github.com/octrow/meet-captions-android/actions/workflows/ci.yml"><img alt="CI" src="https://github.com/octrow/meet-captions-android/actions/workflows/ci.yml/badge.svg"></a>
 <a href="https://github.com/octrow/meet-captions-android/releases/latest"><img alt="Последний релиз" src="https://img.shields.io/github/v/release/octrow/meet-captions-android"></a>
 <img alt="Android 11+" src="https://img.shields.io/badge/Android-11%2B-3DDC84">
+<a href="https://scorecard.dev/viewer/?uri=github.com/octrow/meet-captions-android"><img alt="OpenSSF Scorecard" src="https://api.scorecard.dev/projects/github.com/octrow/meet-captions-android/badge"></a>
 <a href="LICENSE"><img alt="Лицензия MIT" src="https://img.shields.io/badge/license-MIT-blue"></a>
 </p>
 
