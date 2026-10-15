@@ -27,10 +27,7 @@ class Transcript(private val timeFormat: (Long) -> String = ::clock) {
 
     fun add(blocks: List<Block>, now: Long) {
         val current = turns.lastOrNull()
-        // A name node can vanish for one snapshot; that must not split the speaker's turn.
-        val live = blocks.lastOrNull()
-            ?.let { if (it.speaker.isBlank() && current != null) it.copy(speaker = current.speaker) else it }
-            ?: return
+        val live = blocks.lastOrNull()?.let { withKnownSpeaker(it, current) } ?: return
         if (current?.speaker == live.speaker) {
             current.add(live.text)
             return
@@ -42,6 +39,10 @@ class Transcript(private val timeFormat: (Long) -> String = ::clock) {
         val staleText = live.text == current?.lastText
         turns += Turn(live.speaker, now).apply { if (!staleText) add(live.text) }
     }
+
+    // A name node can vanish for one snapshot; that must not split the speaker's turn.
+    private fun withKnownSpeaker(block: Block, current: Turn?): Block =
+        if (block.speaker.isBlank() && current != null) block.copy(speaker = current.speaker) else block
 
     fun isEmpty(): Boolean = turns.isEmpty()
 
