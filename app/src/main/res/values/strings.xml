@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="service_description">Читает субтитры Google Meet с экрана и сохраняет их в Documents/MeetCaptions. Ничего не отправляет в сеть.</string>
+</resources>
