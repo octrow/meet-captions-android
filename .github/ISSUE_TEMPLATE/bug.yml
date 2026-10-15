@@ -1,0 +1,36 @@
+name: Bug report
+description: Captions are not saved, saved wrong, or the app misbehaves
+labels: [bug]
+body:
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened
+      description: What you expected and what you got. Paste a piece of the transcript if it helps.
+    validations: { required: true }
+  - type: input
+    id: phone
+    attributes:
+      label: Phone and Android version
+      placeholder: Samsung S24 Ultra, Android 16
+    validations: { required: true }
+  - type: input
+    id: meet
+    attributes:
+      label: Meet app or Gmail, and its version
+      description: Settings → Apps → Meet (or Gmail) → version at the bottom
+      placeholder: Meet 379 / Gmail 2026.09
+    validations: { required: true }
+  - type: input
+    id: app
+    attributes:
+      label: Meet Captions version
+      placeholder: 0.1.0
+    validations: { required: true }
+  - type: textarea
+    id: dumps
+    attributes:
+      label: Debug files
+      description: >-
+        In the app, Отладка (Debug) → turn on «Записывать события и дампы окон», make a short call with captions on, attach dump_*.txt and events_*.txt
+        from Documents/MeetCaptions. Remove private names and text first.
