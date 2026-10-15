@@ -1,0 +1,9 @@
+<p>Meet Captions saves the live captions of every Google Meet call as a text file, with speaker names and timestamps. It works when you are not the organizer and in any caption language, including ones Gemini notes don't support.</p>
+<p>An accessibility service reads the captions from the call screen (the Meet app or a Meet call inside Gmail) and writes them to Documents/MeetCaptions. A new file starts after 5 minutes without captions.</p>
+<ul>
+<li>No audio is recorded: only the text Meet already shows on your screen.</li>
+<li>No internet permission and no third-party libraries.</li>
+<li>Transcript list in the app: open or share a call.</li>
+<li>If a Meet update changes its screen, the element ids can be adjusted in the app without a new version.</li>
+</ul>
+<p>The call screen must be open with captions turned on. Other participants don't see that you save captions; check that this is allowed where you live.</p>

@@ -1,0 +1,1 @@
+First public version: saves Meet captions with speaker names and times, in the Meet app and in Meet calls inside Gmail.
