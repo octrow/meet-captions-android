@@ -37,4 +37,22 @@ class TranscriptTest {
         t.add(listOf(Block("", "текст без имени")), 1)
         assertEquals("? (t1)\nтекст без имени\n", t.text())
     }
+
+    @Test
+    fun blockWithMissingNameContinuesCurrentSpeaker() {
+        val t = transcript()
+        t.add(listOf(Block("Аня", "раз два")), 1)
+        t.add(listOf(Block("", "раз два три")), 2)
+        t.add(listOf(Block("Аня", "раз два три четыре")), 3)
+        assertEquals("Аня (t1)\nраз два три четыре\n", t.text())
+    }
+
+    @Test
+    fun newNameOverStaleTextDoesNotCopyPreviousTurn() {
+        val t = transcript()
+        t.add(listOf(Block("Аня", "привет как дела")), 1)
+        t.add(listOf(Block("Боб", "привет как дела")), 2)
+        t.add(listOf(Block("Боб", "да")), 3)
+        assertEquals("Аня (t1)\nпривет как дела\n\nБоб (t2)\nда\n", t.text())
+    }
 }

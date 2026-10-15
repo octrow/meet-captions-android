@@ -35,19 +35,25 @@ class CaptionMerger(private val anchorWords: Int = 3) {
 
     fun isEmpty(): Boolean = committed.isEmpty() && block.isEmpty()
 
-    // ponytail: exact word match, ASR revising one of the first anchor words splits the block; fuzzy match if that shows up in real logs
-    // The anchor may run past the block's end (new words), so a shorter overlap there counts too.
+    // ponytail: ASR replacing one of the first anchor words still splits the block; fuzzy match if real logs show it
+    // A full anchor match anywhere wins; only then may the anchor run past the block's end (new words).
     private fun anchorIndex(anchor: List<String>): Int {
-        val minOverlap = minOf(MIN_OVERLAP, anchor.size)
-        for (i in block.size - minOverlap downTo 0) {
-            val len = minOf(anchor.size, block.size - i)
-            if (block.subList(i, i + len) == anchor.subList(0, len)) return i
-        }
-        return -1
+        val key = anchor.map(::normalize)
+        val words = block.map(::normalize)
+        val full = (words.size - key.size downTo 0).firstOrNull { words.subList(it, it + key.size) == key }
+        if (full != null) return full
+        val minOverlap = minOf(MIN_OVERLAP, key.size, words.size)
+        return (words.size - 1 downTo words.size - key.size + 1)
+            .filter { it >= 0 && words.size - it >= minOverlap }
+            .firstOrNull { words.subList(it, words.size) == key.subList(0, words.size - it) } ?: -1
     }
 
     private companion object {
         val WHITESPACE = Regex("\\s+")
+        val PUNCTUATION = Regex("[\\p{P}\\p{S}]")
         const val MIN_OVERLAP = 2
+
+        /** Meet rewrites case and punctuation of earlier words, so they must not break a match. */
+        fun normalize(word: String) = word.lowercase().replace(PUNCTUATION, "")
     }
 }

@@ -8,6 +8,7 @@ import android.widget.Button
 import android.widget.CheckBox
 import android.widget.EditText
 import android.widget.LinearLayout
+import android.widget.ScrollView
 import android.widget.TextView
 import android.widget.Toast
 
@@ -17,11 +18,11 @@ class MainActivity : Activity() {
         setContentView(buildLayout(Prefs(this)))
     }
 
-    private fun buildLayout(prefs: Prefs): LinearLayout {
+    private fun buildLayout(prefs: Prefs): ScrollView {
         val pad = (16 * resources.displayMetrics.density).toInt()
         val textRegex = EditText(this).apply { setText(prefs.idRegex) }
         val nameRegex = EditText(this).apply { setText(prefs.nameRegex) }
-        return LinearLayout(this).apply {
+        val content = LinearLayout(this).apply {
             orientation = LinearLayout.VERTICAL
             setPadding(pad, pad, pad, pad)
             addView(TextView(this@MainActivity).apply {
@@ -46,6 +47,11 @@ class MainActivity : Activity() {
                 isChecked = prefs.debugDump
                 setOnCheckedChangeListener { _, on -> prefs.debugDump = on }
             })
+        }
+        // targetSdk 35+ draws edge-to-edge: the outer view takes the system bar insets, the inner keeps its padding.
+        return ScrollView(this).apply {
+            fitsSystemWindows = true
+            addView(content)
         }
     }
 

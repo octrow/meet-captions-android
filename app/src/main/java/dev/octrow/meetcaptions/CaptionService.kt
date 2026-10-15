@@ -23,18 +23,20 @@ class CaptionService : AccessibilityService() {
     private var lastDumpAt = 0L
 
     override fun onAccessibilityEvent(event: AccessibilityEvent) {
-        val root = meetRoot() ?: return
+        val roots = meetRoots()
+        if (roots.isEmpty()) return
         val prefs = Prefs(this)
         val now = System.currentTimeMillis()
-        if (prefs.debugDump) dumpThrottled(root, now)
-        val snapshot = BlockCollector(prefs.idRegex, prefs.nameRegex).collect(root)
+        if (prefs.debugDump) dumpThrottled(roots, now)
+        val collector = BlockCollector(prefs.idRegex, prefs.nameRegex)
+        val snapshot = roots.flatMap(collector::collect)
         if (snapshot.isNotEmpty() && snapshot != lastSnapshot) record(snapshot, now)
     }
 
-    private fun dumpThrottled(root: AccessibilityNodeInfo, now: Long) {
+    private fun dumpThrottled(roots: List<AccessibilityNodeInfo>, now: Long) {
         if (now - lastDumpAt < DUMP_INTERVAL_MS) return
         lastDumpAt = now
-        write(File(outDir(), "dump_${stamp(now)}.txt"), dump(root))
+        write(File(outDir(), "dump_${stamp(now)}.txt"), roots.joinToString("\n") { dump(it) })
     }
 
     private fun record(snapshot: List<Block>, now: Long) {
@@ -42,8 +44,8 @@ class CaptionService : AccessibilityService() {
         lastSnapshot = snapshot
         lastCaptionAt = now
         transcript.add(snapshot, now)
-        handler.removeCallbacks(saveRunnable)
-        handler.postDelayed(saveRunnable, SAVE_DELAY_MS)
+        // Not a debounce: captions change every ~300 ms while people talk, so a reset timer never fires.
+        if (!handler.hasCallbacks(saveRunnable)) handler.postDelayed(saveRunnable, SAVE_DELAY_MS)
     }
 
     override fun onInterrupt() = save()
@@ -53,8 +55,9 @@ class CaptionService : AccessibilityService() {
         super.onDestroy()
     }
 
-    private fun meetRoot(): AccessibilityNodeInfo? =
-        windows.firstNotNullOfOrNull { w -> w.root?.takeIf { it.packageName in MEET_PACKAGES } }
+    // All Meet windows: a menu or bottom sheet sits above the call window in the list.
+    private fun meetRoots(): List<AccessibilityNodeInfo> =
+        windows.mapNotNull { w -> w.root?.takeIf { it.packageName in MEET_PACKAGES } }.reversed()
 
     private fun startSession(now: Long) {
         save()
@@ -86,7 +89,8 @@ class CaptionService : AccessibilityService() {
         private val MEET_PACKAGES = setOf("com.google.android.apps.tachyon", "com.google.android.apps.meetings")
         private const val SAVE_DELAY_MS = 3_000L
         private const val DUMP_INTERVAL_MS = 10_000L
-        private const val SESSION_GAP_MS = 30 * 60_000L
+        // ponytail: a silence this long splits a call in two; detect call end from Meet's UI if that happens
+        private const val SESSION_GAP_MS = 5 * 60_000L
 
         fun outDir(): File = File(
             Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS),

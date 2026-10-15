@@ -5,4 +5,4 @@ dependencyResolutionManagement {
     repositories { google(); mavenCentral() }
 }
 rootProject.name = "meet-captions"
-include(":app")
+include(":app", ":fakemeet")

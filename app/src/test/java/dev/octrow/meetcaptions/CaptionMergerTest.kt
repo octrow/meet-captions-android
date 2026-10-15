@@ -45,4 +45,28 @@ class CaptionMergerTest {
         m.commit()
         assertEquals("слово\n", m.text())
     }
+
+    @Test
+    fun punctuationAndCaseRewriteIsNotDuplicated() {
+        val m = CaptionMerger()
+        m.add("привет как дела")
+        m.add("Привет, как дела? Хорошо")
+        assertEquals("Привет, как дела? Хорошо", m.text())
+    }
+
+    @Test
+    fun fullAnchorMatchWinsOverShortTailOverlap() {
+        val m = CaptionMerger()
+        m.add("да да я согласен да да")
+        m.add("да да я согласен да да точно")
+        assertEquals("да да я согласен да да точно", m.text())
+    }
+
+    @Test
+    fun oneWordBlockGrows() {
+        val m = CaptionMerger()
+        m.add("да")
+        m.add("да, я подготовил")
+        assertEquals("да, я подготовил", m.text())
+    }
 }

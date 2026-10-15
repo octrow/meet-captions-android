@@ -10,15 +10,35 @@
 Боб (14:03:20)
 да, я подготовил цифры
 ```
-Новая встреча (файл) начинается, если субтитров не было 30 минут. Файл обновляется через 3 с после последней фразы.
+Новая встреча (файл) начинается, если субтитров не было 5 минут. Пока идут субтитры, файл перезаписывается каждые 3 с.
 
 ## Сборка и установка
 
+AGP 9.4 (встроенный Kotlin), Gradle 9.8 через wrapper, JDK 17+, `local.properties` → `sdk.dir=…`.
+
 ```bash
-export ANDROID_HOME=/mnt/ntfs/dev-tools/android-sdk
-/mnt/ntfs/dev-tools/gradle-8.10.2/bin/gradle test assembleDebug
+./gradlew :app:test :app:assembleDebug
 adb install -r app/build/outputs/apk/debug/app-debug.apk
 ```
+
+## Сквозной тест без Meet (эмулятор)
+
+`fakemeet/` — тестовый двойник: приложение с пакетом Meet (`com.google.android.apps.tachyon`), которое
+показывает скриптованные субтитры двух говорящих (рост текста, правка пунктуации, смена имени).
+На телефон с настоящим Meet его не ставить: пакеты конфликтуют.
+
+```bash
+./gradlew :fakemeet:assembleDebug
+adb install -r app/build/outputs/apk/debug/app-debug.apk
+adb install -r fakemeet/build/outputs/apk/debug/fakemeet-debug.apk
+adb shell settings put secure enabled_accessibility_services dev.octrow.meetcaptions/dev.octrow.meetcaptions.CaptionService
+adb shell settings put secure accessibility_enabled 1
+adb shell am start -n com.google.android.apps.tachyon/dev.octrow.fakemeet.FakeCallActivity
+sleep 12; adb shell 'cat /sdcard/Documents/MeetCaptions/*.txt'
+```
+
+Ожидается две реплики: `Аня … Привет, как дела? Начнём` и `Боб … да, я подготовил цифры`.
+Эмулятор с образом android-36.1 google_apis падает в surfaceflinger без окна; образ android-35 работает.
 
 ## Включение на телефоне
 

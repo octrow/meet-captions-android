@@ -15,21 +15,32 @@ data class Block(val speaker: String, val text: String)
 class Transcript(private val timeFormat: (Long) -> String = ::clock) {
     private class Turn(val speaker: String, val startedAt: Long) {
         val merger = CaptionMerger()
+        var lastText = ""
+
+        fun add(text: String) {
+            merger.add(text)
+            lastText = text
+        }
     }
 
     private val turns = mutableListOf<Turn>()
 
     fun add(blocks: List<Block>, now: Long) {
-        val live = blocks.lastOrNull() ?: return
         val current = turns.lastOrNull()
+        // A name node can vanish for one snapshot; that must not split the speaker's turn.
+        val live = blocks.lastOrNull()
+            ?.let { if (it.speaker.isBlank() && current != null) it.copy(speaker = current.speaker) else it }
+            ?: return
         if (current?.speaker == live.speaker) {
-            current.merger.add(live.text)
+            current.add(live.text)
             return
         }
         blocks.getOrNull(blocks.size - 2)
             ?.takeIf { it.speaker == current?.speaker }
-            ?.let { current?.merger?.add(it.text) }
-        turns += Turn(live.speaker, now).apply { merger.add(live.text) }
+            ?.let { current?.add(it.text) }
+        // Name and text views update separately: a new name can arrive over the previous speaker's text.
+        val staleText = live.text == current?.lastText
+        turns += Turn(live.speaker, now).apply { if (!staleText) add(live.text) }
     }
 
     fun isEmpty(): Boolean = turns.isEmpty()
