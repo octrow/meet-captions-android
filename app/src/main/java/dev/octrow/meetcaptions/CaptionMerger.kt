@@ -43,8 +43,11 @@ class CaptionMerger(private val anchorWords: Int = 3) {
         val full = (words.size - key.size downTo 0).firstOrNull { words.subList(it, it + key.size) == key }
         if (full != null) return full
         val minOverlap = minOf(MIN_OVERLAP, key.size, words.size)
-        return (words.size - 1 downTo words.size - key.size + 1)
+        // An overlap as long as the anchor only differs by a completed last word: it needs MIN_OVERLAP
+        // words, or a one-word snapshot ("отлично") would continue any block ending in "о".
+        return (words.size - 1 downTo words.size - key.size)
             .filter { it >= 0 && words.size - it >= minOverlap }
+            .filter { words.size - it < key.size || words.size - it >= MIN_OVERLAP }
             .firstOrNull { tailMatches(words.subList(it, words.size), key.subList(0, words.size - it)) } ?: -1
     }
 

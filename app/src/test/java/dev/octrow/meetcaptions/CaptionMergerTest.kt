@@ -77,4 +77,36 @@ class CaptionMergerTest {
         m.add("22 проверка с другой стороны")
         assertEquals("22 проверка с другой стороны", m.text())
     }
+
+    @Test
+    fun unfinishedWordAtAnchorEndIsCompleted() {
+        val m = CaptionMerger()
+        m.add("привет как дел")
+        m.add("привет как дела у тебя")
+        assertEquals("привет как дела у тебя", m.text())
+    }
+
+    @Test
+    fun unfinishedWordInTwoWordSnapshotIsCompleted() {
+        val m = CaptionMerger()
+        m.add("22 провер")
+        m.add("22 проверка")
+        assertEquals("22 проверка", m.text())
+    }
+
+    @Test
+    fun unfinishedWordAfterScrollIsCompleted() {
+        val m = CaptionMerger()
+        m.add("итак мы начнём в пят")
+        m.add("начнём в пятницу утром")
+        assertEquals("итак мы начнём в пятницу утром", m.text())
+    }
+
+    @Test
+    fun oneWordSnapshotDoesNotSwallowPrefixWord() {
+        val m = CaptionMerger()
+        m.add("мы говорили о")
+        m.add("отлично")
+        assertEquals("мы говорили о\nотлично", m.text())
+    }
 }
