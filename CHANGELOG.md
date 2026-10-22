@@ -1,5 +1,10 @@
 # Changelog
 
+## Unreleased
+
+- Fixed: a word Meet completes in the next snapshot ("провер" → "проверка", also after the block scrolled)
+  no longer starts a duplicate line in the transcript.
+
 ## 0.1.0 (2026-10-15)
 
 First public version.
