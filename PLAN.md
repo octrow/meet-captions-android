@@ -37,3 +37,4 @@
 - [docs/system-design.md](docs/system-design.md): разбор по system-design (2026-11-05); сводка по всем репо: `~/dev/docs/system-design-report-2026-11-05.md`
 - [docs/logic-map.md](docs/logic-map.md): как субтитр Meet становится файлом
 - [docs/architecture.md](docs/architecture.md), [docs/decisions.md](docs/decisions.md)
+- [docs/skills-roadmap-2026-11-05.md](docs/skills-roadmap-2026-11-05.md): навыки с рынка вакансий, 2 пункта: JUnit на CaptionMerger/Transcript; unit+detekt в CI и запись файла в корутинах
