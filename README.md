@@ -10,8 +10,8 @@
 <a href="LICENSE"><img alt="MIT license" src="https://img.shields.io/badge/license-MIT-blue"></a>
 </p>
 
-Save Google Meet live captions on Android as text files, with speaker names and timestamps, automatically for
-every call. It works when you are not the organizer and in any caption language, including Russian, where
+Saves Google Meet live captions on Android as text files, with speaker names and times, for every call.
+It works when you are not the organizer and in any caption language, including Russian, where
 Gemini notes and Meet transcripts are not available.
 
 An accessibility service reads the captions from the call screen (the Meet app or a Meet call inside Gmail) and
@@ -56,7 +56,7 @@ A new file starts after 5 minutes without captions.
 
 | Option | Difference |
 |---|---|
-| Gemini "Take notes for me" and Meet transcripts | Depend on the organizer's Workspace plan; Russian is not a supported language; notes are a summary, not a verbatim transcript. |
+| Gemini "Take notes for me" and Meet transcripts | Need the organizer's Workspace plan. No Russian. Notes are a summary, not a verbatim transcript. |
 | [TranscripTonic](https://github.com/vivek-nexus/transcriptonic) | Chrome extension doing the same on desktop; use it on your computer. Web Meet on a phone redirects to the app. |
 | Meeting bots (Vexa and similar) | Join as a visible participant that the organizer has to let in; need a server. |
 | Recording audio and transcribing it | Needs consent to record and competes with the call for the microphone. Meet captions are already recognized text. |
