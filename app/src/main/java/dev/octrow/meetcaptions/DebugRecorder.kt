@@ -16,6 +16,8 @@ import java.util.Locale
 class DebugRecorder(private val dir: File, private val meetPackages: Set<String>) {
     private val started = System.currentTimeMillis()
     private val eventsFile = File(dir, "events_${stamp(started, CaptionService.FILE_STAMP)}.txt")
+    // One dump file per recorder, overwritten: a long call must not leave hundreds of full-tree files.
+    private val dumpFile = File(dir, "dump_${stamp(started, CaptionService.FILE_STAMP)}.txt")
     private var lastDumpAt = 0L
 
     fun onEvent(event: AccessibilityEvent, windows: List<AccessibilityWindowInfo>) {
@@ -23,7 +25,7 @@ class DebugRecorder(private val dir: File, private val meetPackages: Set<String>
         if (eventsFile.length() < MAX_EVENTS_BYTES) append(eventsFile, describe(event, now))
         if (now - lastDumpAt < DUMP_INTERVAL_MS) return
         lastDumpAt = now
-        write(File(dir, "dump_${stamp(now, CaptionService.FILE_STAMP)}.txt"), dumpWindows(windows))
+        write(dumpFile, dumpWindows(windows))
     }
 
     private fun describe(event: AccessibilityEvent, now: Long): String {

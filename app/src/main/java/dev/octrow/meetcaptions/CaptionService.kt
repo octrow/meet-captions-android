@@ -4,7 +4,6 @@ import android.accessibilityservice.AccessibilityService
 import android.os.Environment
 import android.os.Handler
 import android.os.Looper
-import android.util.Log
 import android.view.accessibility.AccessibilityEvent
 import android.view.accessibility.AccessibilityNodeInfo
 import java.io.File
@@ -50,6 +49,7 @@ class CaptionService : AccessibilityService() {
     override fun onInterrupt() = save()
 
     override fun onDestroy() {
+        handler.removeCallbacks(saveRunnable)
         save()
         notice.cancel()
         super.onDestroy()
@@ -68,21 +68,13 @@ class CaptionService : AccessibilityService() {
     private fun save() {
         val file = sessionFile ?: return
         if (transcript.isEmpty()) return
-        write(file, transcript.text())
+        // A failed write (full disk, no storage access) must not look like a working recording.
+        if (!writeAtomic(file, transcript.text())) return
         lastSnapshot.lastOrNull()?.let { notice.show("${it.speaker}: ${it.text}".removePrefix(": ")) }
-    }
-
-    private fun write(file: File, text: String) {
-        try {
-            file.writeText(text)
-        } catch (e: Exception) {
-            Log.e(TAG, "cannot write ${file.path}", e)
-        }
     }
 
 
     companion object {
-        private const val TAG = "MeetCaptions"
         // Meet calls also run inside Gmail (same conference UI library).
         private val MEET_PACKAGES = setOf(
             "com.google.android.apps.tachyon",

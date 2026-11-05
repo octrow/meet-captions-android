@@ -77,7 +77,7 @@ Module: `CaptionService`
 
 Decides: whether raw events and node trees are written.
 Branches:
-- `debugDump` on → a `DebugRecorder` is created on first use; every event is appended to `events_<stamp>.txt` (stops at 5 MB); every 5 s (only when an event arrives) the window list and Meet's node trees go to a new `dump_<stamp>.txt`, so a call leaves one file per 5 s with no cap (#10);
+- `debugDump` on → a `DebugRecorder` is created on first use; every event is appended to `events_<stamp>.txt` (stops at 5 MB); every 5 s (only when an event arrives) the window list and Meet's node trees go to one `dump_<stamp>.txt` per recorder, overwritten each time (#10 fixed);
 - off → the recorder is dropped, so the next switch-on starts a new events file.
 Fails: write errors are logged only.
 Runs on every delivered event, before step 3, so also while Meet has no window.
@@ -158,10 +158,10 @@ Module: `CaptionMerger`
 Decides: when the file is written.
 Branches:
 - first change after a save → one write is scheduled in 3 s; later changes do not move it;
-- `onInterrupt`, `onDestroy`, new session → immediate write. `onDestroy` does not cancel a pending write, so it still runs up to 3 s later (#9);
+- `onInterrupt`, `onDestroy`, new session → immediate write. `onDestroy` cancels a pending write first (#9 fixed); writes go through `writeAtomic` (temp file + rename);
 - no file or an empty transcript → nothing is written.
 The file is rewritten whole each time; its folder is `Documents/MeetCaptions`, created on demand.
-Fails: a write error is logged (`MeetCaptions` tag) and swallowed; the flow goes on and step 10 still runs.
+Fails: `writeAtomic` logs the error (`MeetCaptions` tag) and returns false; `save` then skips the notice (#5 partly fixed: no explicit error signal, `mkdirs` result still ignored).
 Module: `CaptionService`, `Transcript`
 
 ### 10. Recording notice
@@ -170,7 +170,7 @@ Decides: whether the user sees that captions are being saved.
 Branches:
 - notifications allowed → a silent low-importance notice with the last line, private on the lock screen, removed after 60 s without a new save;
 - notifications denied → no notice, no other signal.
-Shown after each save, so it reflects the last snapshot, not necessarily the saved text. Removed in `onDestroy`, but a write still pending then shows it again for 60 s (#9).
+Shown after each save, so it reflects the last snapshot, not necessarily the saved text. Removed in `onDestroy`; the pending write is cancelled there (#9 fixed). Not shown after a failed write.
 Module: `RecordingNotice`
 
 ### Output
@@ -204,6 +204,5 @@ Its applicationId is `com.google.android.apps.tachyon`, so it passes step 1; it 
 - One revised word among the first 3 splits the block and repeats text (#2).
 - A caption with a colon in its first 40 characters is read as a speaker name (#3).
 - Words of a block other than the last two are lost when the speaker changes between snapshots (#4).
-- A failed write is not visible: the notice still says it records (#5).
-- The notice comes back for 60 s after the service is turned off (#9).
-- Debug mode writes a new dump file every 5 s with no cap (#10) and dumps Gmail's content when Gmail is open (#11).
+- A failed write gives no explicit signal: the notice just stops updating and disappears within 60 s; `outDir()` still ignores the `mkdirs` result (#5, partly fixed).
+- Debug mode dumps Gmail's content when Gmail is open (#11); the dump count is fixed to one file per recorder (#10).

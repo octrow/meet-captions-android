@@ -20,7 +20,8 @@ accessibility event ──► CaptionService ──► BlockCollector ──► 
 | `Transcript.kt` → `Block.parse` | Parses caption text line by line; a `Name: ` prefix overrides the name taken from a separate node. |
 | `Transcript.kt` → `Transcript` | List of turns (name, start time, merger). Decides whether a turn continues or a new one starts. |
 | `CaptionMerger.kt` | Merges consecutive snapshots of one turn without duplicates. |
-| `DebugRecorder.kt` | Debug mode: `events_*.txt` and `dump_*.txt`. |
+| `DebugRecorder.kt` | Debug mode: `events_*.txt` and one overwritten `dump_*.txt`. |
+| `FileIo.kt` | `writeAtomic`: temp file + rename for session files. |
 | `Prefs.kt` | Settings: text regex, name regex, debug. |
 | `MainActivity.kt` | Main screen: service status and enable button, restricted-settings help, transcript list (open, share), the two regexes, debug switch. |
 | `res/xml/accessibility_service.xml` | Service config: all event types, Meet and Gmail packages, `isAccessibilityTool`, `notificationTimeout=300`. |
