@@ -2,8 +2,11 @@
 
 ## Unreleased
 
+## 0.1.1 (2026-11-05)
+
 - Fixed: a word Meet completes in the next snapshot ("провер" → "проверка", also after the block scrolled)
   no longer starts a duplicate line in the transcript.
+- Docs: shorter README in plain language; logic map of the caption pipeline with a findings plan and a sync check.
 
 ## 0.1.0 (2026-10-15)
 

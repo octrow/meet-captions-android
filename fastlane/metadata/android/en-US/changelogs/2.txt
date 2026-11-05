@@ -1,0 +1,1 @@
+Fix: a word Meet completes in the next snapshot no longer starts a duplicate line in the transcript.
